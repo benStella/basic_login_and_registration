@@ -1,70 +1,92 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
-class user_credentials
+// class for admin credentials
+class admin_credentials
 {
+
 public:
     string username;
     string password;
 };
 
-class accounts
-{
-
-public:
-    string username;
-    string first_name;
-    string last_name;
-
-private:
-};
-
 int main()
 {
-    user_credentials login;
-    accounts user_accounts;
 
+    // admin credentials
+    admin_credentials login;
     login.username = "Ben";
+    login.password = "123";
+
+    // user input variables
+    string inputChoice;
     string inputUsername;
-    string password = login.password = "123";
     string inputPassword;
+    string registerUsername;
+    string registerFirstName;
+    string registerLastName;
 
-    string user_1[3] = {
-        user_accounts.username = "Blaze",
-        user_accounts.first_name = "Ben",
-        user_accounts.last_name = "stella"};
+    // other variables
+    string outputUsers;
 
-    cout << "username:";
-    cin >> inputUsername;
-    cout << "password:";
-    cin >> inputPassword;
+    // login or register input choice
+    cout << "Login or Register:";
+    cin >> inputChoice;
 
-    while (login.username != inputUsername && password != inputPassword)
+    if (inputChoice == "register")
     {
-        cout << "incorrect username or password" << endl;
+        cout << "username:";
+        cin >> registerUsername;
+        cout << "First Name:";
+        cin >> registerFirstName;
+        cout << "Last Name:";
+        cin >> registerLastName;
+
+        // create a text file
+        fstream users;
+
+        // open stream in append mode
+        users.open("user_accounts.txt", ios::app);
+
+        if (users.is_open())
+        {
+
+            // write to text file
+            users << "Username:" << registerUsername << endl
+                  << "First Name:" << registerFirstName << endl
+                  << "Last Name:" << registerLastName << endl;
+            users.close();
+        }
+    }
+    else if (inputChoice == "login")
+    {
         cout << "username:";
         cin >> inputUsername;
         cout << "password:";
         cin >> inputPassword;
+
+        // while (login.username != inputUsername && login.password != inputPassword)
+        // {
+        //     cout << "incorrect username or password" << endl;
+        //     cout << "username:";
+        //     cin >> inputUsername;
+        //     cout << "password:";
+        //     cin >> inputPassword;
+        // }
+
+        fstream users;
+        users.open("user_accounts.txt", ios::in);
+        if (users.is_open())
+        {
+            while (getline(users, outputUsers))
+            {
+                cout << outputUsers;
+            }
+            users.close();
+        }
     }
-
-    cout << "username:" << user_1[0] << endl;
-    cout << "First Name:" << user_1[1] << endl;
-    cout << "Last Name:" << user_1[2] << endl;
-    // cout << "password:" << inputPassword << endl;
-
-    // cout << "password:" << login.password << endl;
 
     return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started:
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
